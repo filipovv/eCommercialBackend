@@ -4,6 +4,11 @@ import app.models.Cart;
 import app.models.CartItem;
 import app.models.Product;
 
+/**
+ * The Application program implements an application that
+ * creates objects of type Product, fills them in CartItems by quantity and adds them to a cart,
+ * witch then provides functionality and information about the cart and the items in it.
+ */
 public class Application {
     public static void main(String[] args) {
         Product chocolate = new Product("Chocolate", 4.55);
