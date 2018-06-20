@@ -1,6 +1,8 @@
 package app.models;
 
 
+import java.util.Objects;
+
 /**
  * The Product class contains information and properties needed to
  * create a Product object. Via its public methods one can access
@@ -19,6 +21,25 @@ public class Product {
     public Product(String label, double price) {
         this.setLabel(label);
         this.setPrice(price);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof Product)) {
+            return false;
+        }
+
+        Product product = (Product) obj;
+        return getLabel().equalsIgnoreCase(product.getLabel());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLabel());
     }
 
     /**
@@ -47,6 +68,9 @@ public class Product {
      * @param label String value to be set as the label of the product.
      */
     private void setLabel(String label) {
+        if (label == null) {
+            throw new IllegalArgumentException("Label cannot be null.");
+        }
         this.label = label;
     }
 

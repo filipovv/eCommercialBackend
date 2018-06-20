@@ -24,7 +24,6 @@ public class Cart {
      */
     public Cart() {
         this.cartItems = new HashSet<>();
-        this.calculateDeliveryFee();
     }
 
     /**
@@ -33,7 +32,7 @@ public class Cart {
     private void calculateDeliveryFee() {
         if (this.calculateTotalPriceForCartItems() < 100) {
             this.deliveryFee = PRICE_UNDER_100_DELIVERY;
-        } else if (this.calculateTotalPriceForCartItems() > 100 && this.calculateTotalPriceForCartItems() < 200) {
+        } else if (this.calculateTotalPriceForCartItems() < 200) {
             this.deliveryFee = PRICE_BETWEEN_100_AND_200_DELIVERY;
         } else {
             this.deliveryFee = 0;
@@ -72,7 +71,15 @@ public class Cart {
      * @param cartItem Object of type CartItem to be added in the cart.
      */
     public void addCartItem(CartItem cartItem) {
-        this.cartItems.add(cartItem);
+        if (!this.cartItems.contains(cartItem)) {
+            this.cartItems.add(cartItem);
+        } else {
+            for (CartItem item : cartItems) {
+                if (item.equals(cartItem)) {
+                    item.increaseQuantity(cartItem.getQuantity());
+                }
+            }
+        }
         this.calculateDeliveryFee();
     }
 
@@ -82,6 +89,9 @@ public class Cart {
      * @param cartItem Object of type CartItem to be removed from the cart.
      */
     public void removeCartItem(CartItem cartItem) {
+        if (cartItem == null) {
+            throw new IllegalArgumentException("Cart item to remove cannot be null.");
+        }
         this.cartItems.remove(cartItem);
         this.calculateDeliveryFee();
     }

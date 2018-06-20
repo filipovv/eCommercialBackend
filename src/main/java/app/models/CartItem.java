@@ -1,5 +1,7 @@
 package app.models;
 
+import java.util.Objects;
+
 /**
  * The CartItem class contains information and properties needed to
  * create a CartItem object. Via its public methods one can access
@@ -20,6 +22,17 @@ public class CartItem {
         this.setQuantity(quantity);
     }
 
+    public void increaseQuantity(int quantity) {
+        this.quantity += quantity;
+    }
+
+    public void decreaseQuantity(int quantity) {
+        if ((this.quantity - quantity) < 0) {
+            throw new IllegalArgumentException("Quantity cannot be zero or less.");
+        }
+        this.quantity -= quantity;
+    }
+
     /**
      * Method used to calculate the total price for the cart item based on it's quantity.
      *
@@ -27,6 +40,25 @@ public class CartItem {
      */
     public double calculateProductPriceByQuantity() {
         return this.getProduct().getPrice() * this.getQuantity();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof CartItem)) {
+            return false;
+        }
+
+        CartItem cartItem = (CartItem) obj;
+        return getProduct().getLabel().equalsIgnoreCase(cartItem.getProduct().getLabel());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getProduct().getLabel());
     }
 
     /**
@@ -55,6 +87,9 @@ public class CartItem {
      * @param product Object of type Product to be set as the product of the cart item.
      */
     private void setProduct(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null.");
+        }
         this.product = product;
     }
 
